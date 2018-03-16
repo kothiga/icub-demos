@@ -8,7 +8,7 @@ if(COMMAND cmake_policy)
     cmake_policy(SET CMP0003 NEW)
 endif(COMMAND cmake_policy)
 
-project (icub-demo)
+project (demos)
 
 # Check for the minimal set of packages required for the global project.
 # If we include them here, sub-projects can be configured a bit faster.
@@ -46,7 +46,7 @@ if(COMPILER_SUPPORTS_CXX11)
 elseif(COMPILER_SUPPORTS_CXX0X)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++0x -O3")
 else()
-        message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -54,9 +54,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 add_definitions(${YARP_DEFINES})
 include(YarpInstallationHelpers)
 
-
 find_package(OpenCV)
-
 
 # default prefix for applications
 set(ICUB_APPLICATIONS_PREFIX "$ENV{ICUB_ROOT}" CACHE PATH "Application path prefix")
@@ -65,7 +63,6 @@ set(ICUB_APPLICATIONS_PREFIX "$ENV{ICUB_ROOT}" CACHE PATH "Application path pref
 # Go through single folder
 add_subdirectory(src)
 add_subdirectory(app)
-add_subdirectory(audioLib)
 
-icubcontrib_finalize_export(icub-demo)
+#icubcontrib_finalize_export(icub-demos)
 icubcontrib_add_uninstall_target()        #macro added 13/11/2013

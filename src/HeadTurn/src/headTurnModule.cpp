@@ -61,7 +61,7 @@ bool headTurnModule::configure(yarp::os::ResourceFinder &rf) {
 
 
   /* create the thread and pass pointers to the module parameters */
-  rThread = new freqVisualisationRatethread(robotName, configFile);
+  rThread = new headTurnRatethread(robotName, configFile);
   rThread->setName(getName().c_str());
   //rThread->setInputPortName(inputPortName.c_str());
 

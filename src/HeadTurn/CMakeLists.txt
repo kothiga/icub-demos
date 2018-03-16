@@ -46,7 +46,6 @@ INCLUDE_DIRECTORIES(
     ${YARP_INCLUDE_DIRS}
     ${ICUB_INCLUDE_DIRS}
     ${ICUB_CONTRIB_DIRS}
-    ${audioLib_INCLUDE_DIRS}
 )
 
 # Search for source code.
@@ -64,7 +63,6 @@ IF (folder_source)
 
     TARGET_LINK_LIBRARIES(${KEYWORD}
       ${YARP_LIBRARIES}
-      audioLib
       )
 
     INSTALL_TARGETS(/bin ${KEYWORD})

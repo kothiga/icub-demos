@@ -37,7 +37,7 @@ bool headTurnRatethread::threadInit() {
   // set up polydriver with head
   options.put("device", "remote_controlboard");
   options.put("local", getName("local_controlboard"));
-  options.put("remote", getName("/head").c_str());
+  options.put("remote", "/icub/head");
 
   robotHead = new PolyDriver(options);
   if (!robotHead->isValid()) {
@@ -106,16 +106,27 @@ void headTurnRatethread::setInputPortName(string InpPort) {
 }
 
 void headTurnRatethread::run() {
-  double yaw = position[count];
-  result = processing();
-  setpoints[0] = yaw;
-  //pos->positionMove(setpoints.data());
 
-  vel->velocityMove(setpoints.data());
+  double *encPos;
+  while (true) {
+    double yaw = position[count];
+    result = processing();
+    setpoints[0] = yaw;
+
+    pos->positionMove(setpoints.data());
+
+    //enc->getEncoder(0, encPos);
+    //yInfo("Encoder at %lf", (*encPos));
+
+    usleep(10000000);
+
+    //enc->getEncoder(0, encPos);
+    //yInfo("Encoder at %lf", (*encPos));
 
 
-  // update counter
-  count = (count+1) % 2;
+    // update counter
+    count = (count+1) % 2;
+  }
 }
 
 bool headTurnRatethread::processing() {
@@ -124,8 +135,7 @@ bool headTurnRatethread::processing() {
 }
 
 void headTurnRatethread::threadRelease() {
-  inputPort.interrupt();
-  outputPort.interrupt();
-  inputPort.close();
-  outputPort.close();
+  robotHead->close();
+  pos->stop();
+  vel->stop();
 }

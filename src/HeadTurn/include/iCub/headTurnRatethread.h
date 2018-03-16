@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <unistd.h>
 #include <time.h>
 
 #include <yarp/sig/all.h>

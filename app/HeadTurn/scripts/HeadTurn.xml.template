@@ -1,0 +1,36 @@
+<application>
+
+  <name> HeadTurn </name>
+
+  <module>
+      <name> HeadTurn </name>
+      <parameters> </parameters>
+      <node> icub </node>
+  </module>
+
+  <module>
+      <name> yarprobotinterface </name>
+      <parameters> </parameters>
+      <node> pc104 </node>
+  </module>
+
+  <module>
+      <name> yarpdev </name>
+      <parameters> --from camera/dragonfly2_config_right.ini </parameter>
+      <node> pc104 </node>
+  <module>
+
+  <module>
+      <name> yarpview </name>
+      <parameters> --x 100 --y 100 --h 320 --w 240 --r 33 --name /right </parameters>
+      <node> icub </node>
+  </module>
+
+
+  <connection>
+      <from> /right          </from>
+      <to>   /icub/cam/right </to>
+      <protocol> tcp </protocol>
+  </connection>
+
+</application>
