@@ -1,9 +1,9 @@
 /*
-* @file headTurnModule.cpp
-* @brief Implementation of the headTurnModule (see header file).
+* @file redBallDemoModule.cpp
+* @brief Implementation of the redBallDemoModule (see header file).
 */
 
-#include <iCub/headTurnModule.h>
+#include <iCub/redBallDemoModule.h>
 
 using namespace yarp::os;
 using namespace yarp::sig;
@@ -16,12 +16,12 @@ using namespace std;
  *  equivalent of the "open" method.
  */
 
-bool headTurnModule::configure(yarp::os::ResourceFinder &rf) {
+bool redBallDemoModule::configure(yarp::os::ResourceFinder &rf) {
 
   /* Process all parameters from both command-line and .ini file */
 
   /* get the module name which will form the stem of all module port names */
-  moduleName = rf.check("name", Value("/headTurn"), "module name (string)").asString();
+  moduleName = rf.check("name", Value("/redBallDemo"), "module name (string)").asString();
 
   /*
   * before continuing, set the module name before getting any other parameters,
@@ -61,7 +61,7 @@ bool headTurnModule::configure(yarp::os::ResourceFinder &rf) {
 
 
   /* create the thread and pass pointers to the module parameters */
-  rThread = new headTurnRatethread(robotName, configFile);
+  rThread = new redBallDemoRatethread(robotName, configFile);
   rThread->setName(getName().c_str());
   //rThread->setInputPortName(inputPortName.c_str());
 
@@ -72,12 +72,12 @@ bool headTurnModule::configure(yarp::os::ResourceFinder &rf) {
                       // so that it will then run the module
 }
 
-bool headTurnModule::interruptModule() {
+bool redBallDemoModule::interruptModule() {
   handlerPort.interrupt();
   return true;
 }
 
-bool headTurnModule::close() {
+bool redBallDemoModule::close() {
   handlerPort.close();
 
   /* stop the thread */
@@ -89,7 +89,7 @@ bool headTurnModule::close() {
   return true;
 }
 
-bool headTurnModule::respond(const Bottle& command, Bottle& reply) {
+bool redBallDemoModule::respond(const Bottle& command, Bottle& reply) {
   string helpMessage =  string(getName().c_str()) +
                         " commands are: \n" +
                         "help \n" +
@@ -110,12 +110,12 @@ bool headTurnModule::respond(const Bottle& command, Bottle& reply) {
   return true;
 }
 
-bool headTurnModule::updateModule() {
+bool redBallDemoModule::updateModule() {
   /* Called periodically every getPeriod() seconds */
   return true;
 }
 
-double headTurnModule::getPeriod() {
+double redBallDemoModule::getPeriod() {
 /* module periodicity (seconds), called implicitly by myModule */
   return 1;
 }

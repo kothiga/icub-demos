@@ -3,15 +3,15 @@
   <name> HeadTurn </name>
 
   <module>
-      <name> HeadTurn </name>
-      <parameters> </parameters>
-      <node> icub </node>
-  </module>
-
-  <module>
       <name> yarprobotinterface </name>
       <parameters> </parameters>
       <node> pc104 </node>
+  </module>
+
+  <module>
+      <name> HeadTurn </name>
+      <parameters> </parameters>
+      <node> icub </node>
   </module>
 
   <module>

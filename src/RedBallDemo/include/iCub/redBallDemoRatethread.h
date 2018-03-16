@@ -1,10 +1,10 @@
 /*
-* @file headTurnRatethread.h
-* @brief Definition of a thread that pans the icub head back and forth.
+* @file redBallDemoRatethread.h
+* @brief Definition of a thread that receives an image from input port tracks a red ball.
 */
 
-#ifndef _HEAD_TURN_RATETHREAD_H_
-#define _HEAD_TURN_RATETHREAD_H_
+#ifndef _RED_BALL_DEMO_RATETHREAD_H_
+#define _RED_BALL_DEMO_RATETHREAD_H_
 
 #include <iostream>
 #include <fstream>
@@ -19,7 +19,7 @@
 #include <yarp/os/RateThread.h>
 #include <yarp/os/Log.h>
 
-class headTurnRatethread : public yarp::os::RateThread {
+class redBallDemoRatethread : public yarp::os::RateThread {
 
 private:
 
@@ -55,18 +55,18 @@ public:
   /*
   * constructor default
   */
-  headTurnRatethread();
+  redBallDemoRatethread();
 
   /*
    * constructor
    * @param robotname name of the robot
    */
-  headTurnRatethread(std::string robotname, std::string configFile);
+  redBallDemoRatethread(std::string robotname, std::string configFile);
 
   /*
    * destructor
    */
-  ~headTurnRatethread();
+  ~redBallDemoRatethread();
 
   /*
    * initialises the thread
@@ -108,6 +108,6 @@ public:
   bool processing();
 };
 
-#endif  //_HEAD_TURN_RATETHREAD_H_
+#endif  //_RED_BALL_DEMO_RATETHREAD_H_
 
 //----- end-of-file --- ( next line intentionally left blank ) ------------------

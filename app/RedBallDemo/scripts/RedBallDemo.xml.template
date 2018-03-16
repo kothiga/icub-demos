@@ -2,128 +2,52 @@
 
   <name> RedBallDemo </name>
 
-  <dependancy> /iCubAudioAttention/AudioMapEgo:o </dependancy>
+  <module>
+      <name> yarprobotinterface </name>
+      <parameters> </parameters>
+      <node> pc104 </node>
+  </module>
 
   <module>
-      <name> frequencyVisualisation </name>
-      <parameters> --name /audioMapVisualiser </parameters>
+      <name> RedBallDemo </name>
+      <parameters> </parameters>
       <node> icub </node>
   </module>
 
   <module>
-      <name> frequencyVisualisation </name>
-      <parameters> --name /gammatoneVisualiser </parameters>
-      <node> icub </node>
-  </module>
-
-  <module>
-      <name> frequencyVisualisation </name>
-      <parameters> --name /reducedBeamFormedVisualiser </parameters>
-      <node> icub </node>
-  </module>
-
-  <module>
-      <name> frequencyVisualisation </name>
-      <parameters> --name /bayesianVisualiser --gain 100</parameters>
-      <node> icub </node>
-  </module>
-
-  <module>
-      <name> frequencyVisualisation </name>
-      <parameters> --name /probabilityVisualiser --gain 100 </parameters>
-      <node> icub </node>
-  </module>
-
-
-  <module>
-      <name> yarpview </name>
-      <parameters> --x 100 --y 100 --h 320 --w 240 --r 33 --name /audioMapView </parameters>
-      <node> icub </node>
+      <name> yarpdev </name>
+      <parameters> --from camera/dragonfly2_config_right.ini </parameters>
+      <node> pc104 </node>
   </module>
 
   <module>
       <name> yarpview </name>
-      <parameters> --x 100 --y 350 --h 320 --w 240 --r 33 --name /gammatoneView </parameters>
+      <parameters> --x 100 --y 100 --h 320 --w 240 --r 33 --name /right </parameters>
       <node> icub </node>
   </module>
 
   <module>
-      <name> yarpview </name>
-      <parameters> --x 100 --y 850 --h 320 --w 240 --r 33 --name /reducedBeamFormedView </parameters>
-      <node>icub</node>
+      <name> yarpdev </name>
+      <parameters> --from camera/dragonfly2_config_left.ini </parameters>
+      <node> pc104 </node>
   </module>
 
   <module>
       <name> yarpview </name>
-      <parameters> --x 100 --y 600 --h 320 --w 240 --r 33 --name /bayesianView </parameters>
-      <node> icub </node>
-  </module>
-
-  <module>
-      <name> yarpview </name>
-      <parameters> --x 100 --y 600 --h 320 --w 240 --r 33 --name /probabilityView </parameters>
+      <parameters> --x 100 --y 100 --h 320 --w 240 --r 33 --name /left </parameters>
       <node> icub </node>
   </module>
 
 
   <connection>
-      <from> /iCubAudioAttention/AudioMapEgo:o </from>
-      <to>   /audioMapVisualiser/map:i         </to>
+      <from> /icub/cam/right </from>
+      <to>   /right          </to>
       <protocol> tcp </protocol>
   </connection>
 
   <connection>
-      <from> /iCubAudioAttention/GammaToneFilteredAudio:o </from>
-      <to>   /gammatoneVisualiser/map:i                   </to>
-      <protocol> tcp </protocol>
-  </connection>
-
-  <connection>
-      <from> /iCubAudioAttention/ReducedBeamFormedAudio:o </from>
-      <to>   /reducedBeamFormedVisualiser/map:i           </to>
-      <protocol> tcp </protocol>
-  </connection>
-
-  <connection>
-      <from> /iCubAudioAttention/BayesianMap:o </from>
-      <to>   /bayesianVisualiser/map:i         </to>
-      <protocol> tcp </protocol>
-  </connection>
-
-  <connection>
-      <from> /iCubAudioAttention/ProbabilityMap:o </from>
-      <to>   /probabilityVisualiser/map:i         </to>
-      <protocol> tcp </protocol>
-  </connection>
-
-
-  <connection>
-      <from> /audioMapVisualiser/img:o </from>
-      <to>   /audioMapView             </to>
-      <protocol> tcp </protocol>
-  </connection>
-
-  <connection>
-      <from> /gammatoneVisualiser/img:o </from>
-      <to>   /gammatoneView             </to>
-      <protocol> tcp </protocol>
-  </connection>
-
-  <connection>
-      <from> /reducedBeamFormedVisualiser/img:o </from>
-      <to>   /reducedBeamFormedView             </to>
-      <protocol> tcp </protocol>
-  </connection>
-
-  <connection>
-      <from> /bayesianVisualiser/img:o </from>
-      <to>   /bayesianView             </to>
-      <protocol> tcp </protocol>
-  </connection>
-
-  <connection>
-      <from> /probabilityVisualiser/img:o </from>
-      <to>   /probabilityView             </to>
+      <from> /icub/cam/left </from>
+      <to>   /left          </to>
       <protocol> tcp </protocol>
   </connection>
 
