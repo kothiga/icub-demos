@@ -61,15 +61,14 @@ bool headTurnRatethread::threadInit() {
   pos->getAxes(&jnts);
 
   // resize these to axes
+  encoder.resize(jnts);
   setpoints.resize(jnts);
   checkpoints.resize(jnts);
 
-  //currentpos = 0;
-  //counter = 100;
 
   // init speed
-  speeds[0] = 20;
-  speeds[1] = 20;
+  speeds[0] = 10;
+  speeds[1] = 10;
   pos->setRefSpeeds(speeds);
 
   flagger[2];
@@ -107,24 +106,33 @@ void headTurnRatethread::setInputPortName(string InpPort) {
 
 void headTurnRatethread::run() {
 
-  double *encPos;
   while (true) {
+
     double yaw = position[count];
     result = processing();
     setpoints[0] = yaw;
 
     pos->positionMove(setpoints.data());
+    enc->getEncoders(encoder.data());
 
-    //enc->getEncoder(0, encPos);
-    //yInfo("Encoder at %lf", (*encPos));
+    while (true) {
+      //-- get information on the
+      //-- encoders current position
+      enc->getEncoders(encoder.data());
+      yInfo("Yaw at %lf).", encoder[0]);
 
-    usleep(10000000);
+      //-- wait for the joint to make its way
+      //-- to the location, before giving
+      //-- another instruction
+      if (std::abs(yaw-encoder[0]) < 0.1) {
+        break;
+      }
 
-    //enc->getEncoder(0, encPos);
-    //yInfo("Encoder at %lf", (*encPos));
+      //-- sleep for a bit
+      usleep(20000);
+    }
 
-
-    // update counter
+    //-- update counter
     count = (count+1) % 2;
   }
 }
@@ -136,6 +144,4 @@ bool headTurnRatethread::processing() {
 
 void headTurnRatethread::threadRelease() {
   robotHead->close();
-  pos->stop();
-  vel->stop();
 }

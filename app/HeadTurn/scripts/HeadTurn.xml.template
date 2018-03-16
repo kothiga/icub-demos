@@ -16,9 +16,9 @@
 
   <module>
       <name> yarpdev </name>
-      <parameters> --from camera/dragonfly2_config_right.ini </parameter>
+      <parameters> --from camera/dragonfly2_config_right.ini </parameters>
       <node> pc104 </node>
-  <module>
+  </module>
 
   <module>
       <name> yarpview </name>
@@ -28,8 +28,8 @@
 
 
   <connection>
-      <from> /right          </from>
-      <to>   /icub/cam/right </to>
+      <from> /icub/cam/right </from>
+      <to>   /right          </to>
       <protocol> tcp </protocol>
   </connection>
 

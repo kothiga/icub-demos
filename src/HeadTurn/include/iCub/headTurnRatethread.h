@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <cstdlib>
 #include <unistd.h>
 #include <time.h>
 
@@ -37,6 +38,7 @@ private:
   yarp::dev::IVelocityControl *vel;
   yarp::dev::IEncoders *enc;
 
+  yarp::sig::Vector encoder;
   yarp::sig::Vector setpoints;
   yarp::sig::Vector checkpoints;
 

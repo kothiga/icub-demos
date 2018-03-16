@@ -81,7 +81,7 @@ bool headTurnModule::close() {
   handlerPort.close();
   /* stop the thread */
   yDebug("stopping the thread \n");
-  rThread->stop();
+  rThread->threadRelease();
   return true;
 }
 
