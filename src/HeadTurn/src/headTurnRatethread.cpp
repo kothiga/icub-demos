@@ -106,35 +106,33 @@ void headTurnRatethread::setInputPortName(string InpPort) {
 
 void headTurnRatethread::run() {
 
+  double yaw = position[count];
+  result = processing();
+  setpoints[0] = yaw;
+
+  pos->positionMove(setpoints.data());
+
   while (true) {
 
-    double yaw = position[count];
-    result = processing();
-    setpoints[0] = yaw;
-
-    pos->positionMove(setpoints.data());
+    //-- get information on the
+    //-- encoders current position
     enc->getEncoders(encoder.data());
+    yInfo("Yaw at %lf).", encoder[0]);
 
-    while (true) {
-      //-- get information on the
-      //-- encoders current position
-      enc->getEncoders(encoder.data());
-      yInfo("Yaw at %lf).", encoder[0]);
-
-      //-- wait for the joint to make its way
-      //-- to the location, before giving
-      //-- another instruction
-      if (std::abs(yaw-encoder[0]) < 0.1) {
-        break;
-      }
-
-      //-- sleep for a bit
-      usleep(20000);
+    //-- wait for the joint to make its way
+    //-- to the location, before giving
+    //-- another instruction
+    if (std::abs(yaw-encoder[0]) < 0.1) {
+      break;
     }
 
-    //-- update counter
-    count = (count+1) % 2;
+    //-- sleep for a bit
+    usleep(20000);
   }
+
+  //-- update counter
+  count = (count+1) % 2;
+
 }
 
 bool headTurnRatethread::processing() {

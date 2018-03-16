@@ -73,18 +73,20 @@ bool redBallDemoModule::configure(yarp::os::ResourceFinder &rf) {
 }
 
 bool redBallDemoModule::interruptModule() {
-  handlerPort.interrupt();
+
   return true;
 }
 
 bool redBallDemoModule::close() {
-  handlerPort.close();
 
   /* stop the thread */
   yDebug("stopping the thread \n");
 
   rThread->threadRelease();
   delete rThread;
+
+  handlerPort.interrupt();
+  handlerPort.close();
 
   return true;
 }

@@ -38,6 +38,12 @@
       <node> icub </node>
   </module>
 
+  <module>
+      <name> yarpview </name>
+      <parameters> --x 100 --y 100 --h 320 --w 240 --r 33 --name /trackingImage </parameters>
+      <node> icub </node>
+  </module>
+
 
   <connection>
       <from> /icub/cam/right </from>
@@ -48,6 +54,18 @@
   <connection>
       <from> /icub/cam/left </from>
       <to>   /left          </to>
+      <protocol> tcp </protocol>
+  </connection>
+
+  <connection>
+      <from> /icub/cam/right    </from>
+      <to>   /redBallDemo/img:i </to>
+      <protocol> tcp </protocol>
+  </connection>
+
+  <connection>
+      <from> /redBallDemo/img:o </from>
+      <to>   /trackingImage     </to>
       <protocol> tcp </protocol>
   </connection>
 

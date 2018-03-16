@@ -42,19 +42,27 @@ private:
   yarp::sig::Vector setpoints;
   yarp::sig::Vector checkpoints;
 
-  int count;
-
+  //int count;
   double currentpos;
   double counter;
   double speeds[2];
   double position[2];
-
   bool flagger[2];
+
+  // image proc
+  yarp::os::BufferedPort<yarp::sig::ImageOf<yarp::sig::PixelRgb> > inputPort;
+  yarp::os::BufferedPort<yarp::sig::ImageOf<yarp::sig::PixelRgb> > outputPort;
+  yarp::sig::ImageOf<yarp::sig::PixelRgb>* image;
+  yarp::sig::ImageOf<yarp::sig::PixelRgb>* outputImage;
+
+  double xMean;
+  double yMean;
+  int ct;
 
 public:
   /*
-  * constructor default
-  */
+   * constructor default
+   */
   redBallDemoRatethread();
 
   /*
