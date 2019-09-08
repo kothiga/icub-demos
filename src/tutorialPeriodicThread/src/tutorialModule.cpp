@@ -88,7 +88,8 @@ bool tutorialModule::configure(yarp::os::ResourceFinder &rf) {
     pThread->start();
 
 
-    //-- Let the RFModule know everything went well so that it will then run the module.
+    //-- Let the RFModule know everything went 
+    //-- well so that it will then run the module.
     return true ;     
 }
 
@@ -104,9 +105,10 @@ bool tutorialModule::close() {
     handlerPort.close();
 
     //-- Stop the thread.
-    yDebug("stopping the thread \n");
+    yDebug("Stopping the thread . . . \n");
     pThread->stop();
 
+    //-- Release the periodic thread.
     delete pThread;
 
     return true;

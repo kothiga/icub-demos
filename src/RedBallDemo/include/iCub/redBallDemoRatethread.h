@@ -16,7 +16,7 @@
 #include <yarp/sig/all.h>
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
-#include <yarp/os/RateThread.h>
+#include <yarp/os/RateThread.h> 
 #include <yarp/os/Log.h>
 
 class redBallDemoRatethread : public yarp::os::RateThread {

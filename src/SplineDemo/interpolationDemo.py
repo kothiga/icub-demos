@@ -6,12 +6,16 @@ import argparse
 
 # Init a parser.
 parser = argparse.ArgumentParser(description='interpolation')
-parser.add_argument('--frlag', default=0,     type=int, help='Number of frames to lag the samples by. (default: {})'.format(0))
-parser.add_argument('--freq',  default=48000, type=int, help='Sin Frequency to be generated. (default: {})'.format(48000))
+parser.add_argument('--frlag', default=0,    type=int, help='Number of frames to lag the samples by. (default: {})'.format(0))
+parser.add_argument('--freq',  default=580,  type=int, help='Sin Frequency to be generated. (default: {})'.format(48000))
+parser.add_argument('--samps', default=4096, type=int, help='Number of frames sampled. (default: {})'.format(4096))
+parser.add_argument('--beamG', default=1,    type=int, help='Number of additional samples to delay beam by. (default: {})'.format(1))
 args = parser.parse_args()
 
 frlag = args.frlag
 freq  = args.freq
+nSamples = args.samps
+beamGain = args.beamG
 
 def pol2cart(phi, rho):
     x = rho * np.cos(phi)
@@ -42,12 +46,33 @@ def compass(u, v, arrowprops=None):
     return fig, ax
 
 
-c          = 343.36
+def getSampleDelay():
+
+    angle_resolution = 180
+    startAngle_index = int(  0 * (angle_resolution / 180))
+    endAngle_index   = int(180 * (angle_resolution / 180))
+
+    angle_index = np.zeros(angle_resolution)
+
+    for angle in range(startAngle_index, endAngle_index):
+        angle_index[angle] = 180 * angle / (angle_resolution - 1) * np.pi / 180
+        angle_index[angle] = 0.145 * 48000 * (-np.cos(angle_index[angle])) / 336.628
+        angle_index[angle] = np.round(angle_index[angle])
+        if angle != startAngle_index: angle_index[angle] -= angle_index[startAngle_index]
+    angle_index[startAngle_index] -= angle_index[startAngle_index]
+
+    return angle_index.astype(int)
+
+
+
+
+
+#c          = 343.36
+c          = 336.628
 d          = 0.145
-nSamples   = 4096
 sampleRate = 48000 
-#nBeamsPerHemifield = int(np.ceil((d/c) * sampleRate))     # demos way
-nBeamsPerHemifield = int( (d / c) * sampleRate) - 1
+nBeamsPerHemifield = int(np.ceil((d/c) * sampleRate))     # demos way
+#nBeamsPerHemifield = int( (d / c) * sampleRate) - 1
 
 nBeams = 2 * nBeamsPerHemifield + 1
 nMicAngles = nBeams*2-2
@@ -95,8 +120,6 @@ print("Sample Delay Shape: {}".format(sample_delay.shape))
 lags = (c/sampleRate) * np.arange(-nBeamsPerHemifield, nBeamsPerHemifield+1) # NOTE: +1 TO INCLUDE LAST ELEMENT
 print("Number of Lags:",lags.shape)
 
-exit()
-
 angles = (1/d) * lags
 
 # Find angles out of range for arcsin.
@@ -127,13 +150,11 @@ micAngles = np.unwrap(micAngles) - (2*np.pi)
 
 print("Number of Mic Angles: {}".format(micAngles.shape))
 
-exit()
 
 #######################################
 
-
 beamsX, beamsY = pol2cart(angles, 1)
-#compass(beamsX, beamsY)
+compass(beamsX, beamsY)
 #plt.show()
 
 
@@ -165,7 +186,7 @@ beamCount = 0
 
 for b in range(-nBeamsPerHemifield, nBeamsPerHemifield+1):
 
-    tempR = np.roll(right, b)
+    tempR = np.roll(right, b * beamGain)
     tempBeam = left + tempR
 
     egoSpaceMap_front[beamCount] = np.sqrt( np.sum(tempBeam**2) / nSamples )
@@ -174,6 +195,9 @@ for b in range(-nBeamsPerHemifield, nBeamsPerHemifield+1):
 
 
 #######################################
+
+
+print("Ego Map Front Pre: {}\n{}".format(egoSpaceMap_front.shape, egoSpaceMap_front))
 
 
 plt.figure()
@@ -240,4 +264,50 @@ lin_spline_error = np.sum( np.abs(egoSpaceMap_hiRes - egoSpaceMap_hiRes_Lin) )
 print("\nError between Linear and Spline: {}".format(lin_spline_error))
 
 
+
+
+angle_index = getSampleDelay()
+
+print("Angles: {}".format(angles.shape))
+
+print("Angle Indexes: {}".format(angle_index.shape))
+
+
+normalAngles = np.linspace( (-np.pi / 2), (np.pi / 2), 180 )
+
+print("normalAngles: {}".format(normalAngles.shape))
+
+front_interp = np.zeros(180)
+
+for angle in range(0, 180):
+
+    if normalAngles[angle] <= angles[angle_index[angle]]:
+        idx0 = angle_index[angle] - 1
+        idx1 = angle_index[angle]
+    else:
+        idx0 = angle_index[angle]
+        idx1 = angle_index[angle] + 1
+
+    print("{}: {:.03} -->  {}: {:.03}, {:.03}  with  {}: {:.03}, {:.03} --> {}".format(angle, normalAngles[angle], idx0, angles[idx0], egoSpaceMap_front[idx0], idx1, 0.0002, 0.0002, front_interp[angle]))
+
+    front_interp[angle] = lininterp (
+        normalAngles[angle],
+        angles[idx0],
+        egoSpaceMap_front[idx0],
+        angles[idx1],
+        egoSpaceMap_front[idx1]
+    )
+
+    print("{}: {:.03} -->  {}: {:.03}, {:.03}  with  {}: {:.03}, {:.03} --> {}".format(angle, normalAngles[angle], idx0, angles[idx0], egoSpaceMap_front[idx0], idx1, angles[idx1],egoSpaceMap_front[idx1], front_interp[angle]))
+
+print("front_interp: {}".format(front_interp.shape))
+
+
+plt.figure()
+plt.plot(front_interp, 'o')
+
+
 plt.show()
+
+
+

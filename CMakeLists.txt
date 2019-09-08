@@ -63,6 +63,7 @@ set(ICUB_APPLICATIONS_PREFIX "$ENV{ICUB_ROOT}" CACHE PATH "Application path pref
 # Go through single folder
 add_subdirectory(src)
 add_subdirectory(app)
+add_subdirectory(Dependencies)
 
 #icubcontrib_finalize_export(icub-demos)
 icubcontrib_add_uninstall_target()        #macro added 13/11/2013

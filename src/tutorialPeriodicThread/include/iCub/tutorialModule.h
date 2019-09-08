@@ -146,7 +146,7 @@
 
 #include <iCub/tutorialPeriodicThread.h>
 
-class tutorialModule:public yarp::os::RFModule { 
+class tutorialModule : public yarp::os::RFModule { 
 
   private:
   
@@ -168,7 +168,7 @@ class tutorialModule:public yarp::os::RFModule {
   public:
 
     /* ===========================================================================
-     *  Configure all the tutorial parameters and return true if successful.
+     *  Configure all the parameters and return true if successful.
      * 
      * @param rf : Reference to the resource finder.
      * 

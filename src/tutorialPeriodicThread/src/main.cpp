@@ -18,10 +18,10 @@
   * Public License for more details
 */
   
-/**
+/* ===========================================================================
  * @file  main.cpp
  * @brief main code for the tutorial module.
- */
+ * =========================================================================== */
 
 #include <iCub/tutorialModule.h> 
 
